@@ -3,6 +3,8 @@ package com.demo.blogappwithsecuritydevtiro.service;
 import com.demo.blogappwithsecuritydevtiro.domain.dto.CategoryDto;
 import com.demo.blogappwithsecuritydevtiro.domain.entity.Category;
 import com.demo.blogappwithsecuritydevtiro.domain.request.CreateCategoryRequest;
+import com.demo.blogappwithsecuritydevtiro.exception.CategoryAlreadyExistsException;
+import com.demo.blogappwithsecuritydevtiro.exception.CategoryNotFoundException;
 import com.demo.blogappwithsecuritydevtiro.mapper.CategoryMapper;
 import com.demo.blogappwithsecuritydevtiro.repository.CategoryRepository;
 
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CategoryService {
@@ -36,11 +39,20 @@ public class CategoryService {
     @Transactional
     public CategoryDto saveCategory(CreateCategoryRequest createCategoryRequest) {
         if (categoryRepository.existsByName(createCategoryRequest.getName())) {
-            throw new RuntimeException("Category with name : "+ createCategoryRequest.getName() + " already exists");
+            throw new CategoryAlreadyExistsException
+                    ("Category with name " + createCategoryRequest.getName() + " already exists");
         }
         Category categoryToSave = categoryMapper.mapToCategory(createCategoryRequest);
         Category savedCategory = categoryRepository.save(categoryToSave);
         return categoryMapper.mapToCategoryDto(savedCategory);
+    }
+
+    //delete category
+    @Transactional
+    public void deleteCategoryWithCategoryId(UUID categoryId) {
+        Category categoryToDelete = categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new CategoryNotFoundException("Category with id " + categoryId + " not found"));
+        categoryRepository.delete(categoryToDelete);
     }
 
 }
