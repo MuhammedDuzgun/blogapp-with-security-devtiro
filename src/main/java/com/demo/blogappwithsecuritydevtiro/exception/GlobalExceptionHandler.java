@@ -3,6 +3,7 @@ package com.demo.blogappwithsecuritydevtiro.exception;
 import com.demo.blogappwithsecuritydevtiro.domain.error.ApiErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -23,6 +24,14 @@ public class GlobalExceptionHandler {
         apiErrorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         apiErrorResponse.setMessage(ex.getMessage());
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+        apiErrorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        apiErrorResponse.setMessage(ex.getMessage());
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.UNAUTHORIZED);
     }
 
 }
