@@ -10,4 +10,5 @@ public interface TagService {
     List<TagResponse> findAllTags();
     TagResponse createTag(CreateTagRequest createTagRequest);
     void deleteTag(UUID id);
+    TagResponse findTagById(UUID id);
 }

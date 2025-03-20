@@ -55,4 +55,10 @@ public class CategoryService {
         categoryRepository.delete(categoryToDelete);
     }
 
+    public CategoryDto getCategoryById(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(()-> new CategoryNotFoundException("Category with id " + categoryId + " not found"));
+        return categoryMapper.mapToCategoryDto(category);
+    }
+
 }

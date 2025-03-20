@@ -30,7 +30,7 @@ public class Post implements Serializable {
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer readingTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -123,6 +123,22 @@ public class Post implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     @Override

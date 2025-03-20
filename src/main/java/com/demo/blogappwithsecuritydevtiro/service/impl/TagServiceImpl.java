@@ -52,4 +52,11 @@ public class TagServiceImpl implements TagService {
         tagRepository.delete(tagToDelete);
     }
 
+    @Override
+    public TagResponse findTagById(UUID id) {
+        Tag tag = tagRepository.findById(id)
+                .orElseThrow(()-> new TagNotFoundException("Tag with id " + id + " not found"));
+        return tagMapper.mapToTagResponse(tag);
+    }
+
 }
