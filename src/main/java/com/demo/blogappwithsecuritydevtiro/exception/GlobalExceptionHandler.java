@@ -1,6 +1,7 @@
 package com.demo.blogappwithsecuritydevtiro.exception;
 
 import com.demo.blogappwithsecuritydevtiro.domain.error.ApiErrorResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,6 +33,22 @@ public class GlobalExceptionHandler {
         apiErrorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         apiErrorResponse.setMessage(ex.getMessage());
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(TagAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handeTagAlreadyExistsException(TagAlreadyExistsException ex) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+        apiErrorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        apiErrorResponse.setMessage(ex.getMessage());
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TagNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleTagNotFoundException(TagNotFoundException ex) {
+        ApiErrorResponse apiErrorResponse = new ApiErrorResponse();
+        apiErrorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+        apiErrorResponse.setMessage(ex.getMessage());
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.NOT_FOUND);
     }
 
 }
